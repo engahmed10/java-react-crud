@@ -16,9 +16,19 @@ const Appointments = (props) => {
           { 
             state.map(apponitment=>
              <div>
-             {apponitment.description}
+            <ol> 
+            <li>
+            Appointment  Description: {
+             apponitment.description
+             }
+             </li>
+              Appointment  date: {
+             apponitment.date
+             }
+             <li>
+             </li>
+             </ol>
              </div>
-            
            )
            }
            </fragment>
