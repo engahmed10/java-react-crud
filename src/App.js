@@ -9,26 +9,22 @@ function App() {
   return (
    <div className="App">
       <Appointments/>
-     
-    
-       <Modal
-            onClose={() => setOpen(false)}
-            onOpen={() => setOpen(true)}
-            open={open}
-            trigger={<Button>Add Appointment</Button>}
-        >
-        
-      <Modal.Header>Add Appointment</Modal.Header>
-          <Modal.Content >
-            <CreateAppointment/>
-          
-          </Modal.Content>
-          <Modal.Actions>
-            <Button color='black' onClick={() => setOpen(false)}>
-              Close
-            </Button>
-          </Modal.Actions>
-    </Modal>
+        <Modal
+              onClose={() => setOpen(false)}
+              onOpen={() => setOpen(true)}
+              open={open}
+              trigger={<Button>Add Appointment</Button>}
+           >
+          <Modal.Header>Add Appointment</Modal.Header>
+            <Modal.Content >
+              <CreateAppointment/>
+            </Modal.Content>
+            <Modal.Actions>
+              <Button color='black' onClick={() => setOpen(false)}>
+                Close
+              </Button>
+            </Modal.Actions>
+         </Modal>
     </div>
 
   );
