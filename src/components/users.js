@@ -1,9 +1,16 @@
-import React ,{useState,useEffect}  from 'react'
+import React ,{useState,useEffect,useRef}  from 'react'
 import {Image,List,Button, Header, Modal} from 'semantic-ui-react'
 //import Modal from 'react-moal'
+import    CreateUserForm from './createuser'
+
+
+
+
 const Users=({props})=>{
 const [users, setUsers] = useState([]);
 const [openuser, setOpenUser] = useState([]);
+const [form, setForm] = useState("");
+
 
    useEffect(()=> {
        fetch("http://localhost:8080/users")
@@ -14,8 +21,31 @@ const [openuser, setOpenUser] = useState([]);
     
    },[]);
 
+
+    function handleChange(e){
+            const{name,value}=e.target
+            setForm(prevState=>({user:{...prevState.user,[name]:value}}))
+       }
+
+    function handleSubmit(e){
+     e.preventDefault();
+        
+          const fetchUrl = 'http://localhost:8080/users';
+          fetch(fetchUrl, {
+              method: 'POST',
+              body: JSON.stringify(form.user),
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+          })
+          .then((response) => response.json())
+          .then((data) => setUsers(users.concat(data)))
+          .catch((error) => console.log(`erroorrrr`,error))
+    }
+
    return<fragment>
-        {users.map((user)=>{
+              {console.log(users)}  
+         {users.map((user)=>{
              return   <List selection verticalAlign='middle'>
                 
                     <List.Item>
@@ -28,7 +58,8 @@ const [openuser, setOpenUser] = useState([]);
                           <List.Item as='ul'>    
                              <List.Header>His Appointments</List.Header>
                             <List.Item as='li'> 
-                             {user.appointments.map(app=>
+                             {user.appointments?
+                             user.appointments.map(app=>
                                     <>
                                 <Modal style={{'width':'500px'}}
                                     onClose={() => setOpenUser(false)}
@@ -43,11 +74,10 @@ const [openuser, setOpenUser] = useState([]);
                                     </Modal.Content>
                                     <Modal.Actions>
                                     </Modal.Actions>
-                             </Modal><br/></>)
+                             </Modal><br/></>):""
     
                             }
                            
-
                              </List.Item> 
                          </List.Item> 
                         </List.Content>
@@ -56,6 +86,12 @@ const [openuser, setOpenUser] = useState([]);
                     </List.Item>
                 </List> 
         })}
+
+     <CreateUserForm 
+                     handleSubmit={handleSubmit}
+                     handleChange={handleChange}
+     />
+
      </fragment>
 
 }

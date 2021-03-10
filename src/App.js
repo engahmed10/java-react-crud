@@ -40,7 +40,6 @@ function App() {
            >
           <Modal.Header>Add User</Modal.Header>
             <Modal.Content >
-              <CreateUser/>
             </Modal.Content>
             <Modal.Actions>
               <Button color='black' onClick={() => setOpenUser(false)}>

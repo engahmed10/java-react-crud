@@ -1,29 +1,30 @@
-import React from 'react'
-import { Button, Checkbox, Form } from "semantic-ui-react";
+import { Button, Checkbox, Form } from "semantic-ui-react"
+import React, { useState,useRef }  from 'react'
 
-export const CreateUser= () => {
-   
-   
+
+export const CreateUserForm=({handleSubmit,handleChange}) => {
+    
     return(
-            <>
-            <Form>
+        <>
+            <div>
+            <Form  onSubmit={handleSubmit}>
                 <Form.Field>
                 <label>Full Name</label>
-                <input placeholder='Full name'/>
+                <input placeholder='Full name' name="fullname" onChange ={handleChange}/>
                 </Form.Field>
-                
                 <Form.Field>
                 <label>email</label>
-                 <input placeholder='Email'/>
+                 <input placeholder='Email'  name="email" onChange={handleChange} />
                 </Form.Field>
                 <Button type='submit'>Submit</Button>
             </Form>
-      
+            </div>
+           
             </>
           )
 }
 
 
-export default CreateUser
+export default CreateUserForm
 
 
