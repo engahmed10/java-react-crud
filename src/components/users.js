@@ -1,10 +1,7 @@
 import React ,{useState,useEffect,useRef}  from 'react'
 import {Image,List,Button, Header, Modal} from 'semantic-ui-react'
-//import Modal from 'react-moal'
+//import Modal from 'react-modal'
 import    CreateUserForm from './createuser'
-
-
-
 
 const Users=({props})=>{
 const [users, setUsers] = useState([]);
@@ -35,25 +32,44 @@ const [form, setForm] = useState("");
               method: 'POST',
               body: JSON.stringify(form.user),
               headers: {
-                  'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
               }
           })
           .then((response) => response.json())
           .then((data) => setUsers(users.concat(data)))
           .catch((error) => console.log(`erroorrrr`,error))
+
     }
 
+   function handleDelete(e,id){
+      e.preventDefault();
+      const fetchUrl = `http://localhost:8080/users/${id}`;
+
+      fetch(fetchUrl , {
+        method:'DELETE',
+          headers: {
+                'Content-Type': 'application/json'
+              }
+      })
+       setUsers(users.filter((e)=>e.userid != id ))
+        //e.target.parentNode.remove();          
+   }
+ 
+   
    return<fragment>
               {console.log(users)}  
          {users.map((user)=>{
              return   <List selection verticalAlign='middle'>
                 
-                    <List.Item>
-                    <Image avatar src='https://react.semantic-ui.com/images/avatar/small/daniel.jpg' />
+                   
                     <List.Content>
-                        <List.Header>{user.fullname}</List.Header>
+                        <List.Item>
+                        
                             <List.Content>
-                            {user.email}
+                             <Image avatar src='https://react.semantic-ui.com/images/avatar/small/daniel.jpg' />
+                            <List.Header>{user.fullname}</List.Header>
+                              {user.email}         
+                              <button  onClick={e=>handleDelete(e,user.userid)} >delete</button>
                             <List.Content>
                           <List.Item as='ul'>    
                              <List.Header>His Appointments</List.Header>
@@ -77,13 +93,13 @@ const [form, setForm] = useState("");
                              </Modal><br/></>):""
     
                             }
-                           
                              </List.Item> 
                          </List.Item> 
                         </List.Content>
                         </List.Content>
+                         </List.Item>
                     </List.Content>
-                    </List.Item>
+                   
                 </List> 
         })}
 
