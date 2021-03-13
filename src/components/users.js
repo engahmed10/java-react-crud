@@ -2,12 +2,12 @@ import React ,{useState,useEffect,useRef}  from 'react'
 import {Image,List,Button, Header, Modal} from 'semantic-ui-react'
 //import Modal from 'react-modal'
 import    CreateUserForm from './createuser'
+import    CreateAppointmentForm  from './createappointment'
 
 const Users=({props})=>{
 const [users, setUsers] = useState([]);
 const [openuser, setOpenUser] = useState([]);
 const [form, setForm] = useState("");
-
 
    useEffect(()=> {
        fetch("http://localhost:8080/users")
@@ -17,7 +17,6 @@ const [form, setForm] = useState("");
       )
     
    },[]);
-
 
     function handleChange(e){
             const{name,value}=e.target
@@ -57,55 +56,63 @@ const [form, setForm] = useState("");
  
    
    return<fragment>
-              {console.log(users)}  
          {users.map((user)=>{
-             return   <List selection verticalAlign='middle'>
-                
-                   
-                    <List.Content>
-                        <List.Item>
-                        
-                            <List.Content>
-                             <Image avatar src='https://react.semantic-ui.com/images/avatar/small/daniel.jpg' />
-                            <List.Header>{user.fullname}</List.Header>
-                              {user.email}         
-                              <button  onClick={e=>handleDelete(e,user.userid)} >delete</button>
-                            <List.Content>
-                          <List.Item as='ul'>    
-                             <List.Header>His Appointments</List.Header>
-                            <List.Item as='li'> 
-                             {user.appointments?
-                             user.appointments.map(app=>
-                                    <>
-                                <Modal style={{'width':'500px'}}
-                                    onClose={() => setOpenUser(false)}
-                                    onOpen={() => setOpenUser(true)}
-                                    trigger={<Button> {app.date} </Button>}
-                                >
-                                <Modal.Header  >  {app.type}                      
-                                    </Modal.Header>
-                                    <Modal.Content >
-                                     {app.Description}<br/>
-                                    {app.time}
-                                    </Modal.Content>
-                                    <Modal.Actions>
-                                    </Modal.Actions>
-                             </Modal><br/></>):""
-    
-                            }
-                             </List.Item> 
-                         </List.Item> 
+             return <List selection verticalAlign='middle'>
+
+                       <List.Content>
+
+                               
+                                <List.Item>
+
+                                    <List.Content>
+                                     <Image style={{'margin':'20px 20px'}} avatar src='https://react.semantic-ui.com/images/avatar/small/daniel.jpg' />
+
+                                     {user.fullname}<br/>
+
+                                            {user.email}         
+                                           &nbsp; &nbsp; &nbsp; <button  onClick={e=>handleDelete(e,user.userid)} >delete</button>
+                                    </List.Content>
+                                        
+                                       <List.Item as='ul'>    
+                                               <List.Header>His Appointments</List.Header>
+                                            <List.Item as='li'> 
+                                                    {user.appointments?
+                                                    user.appointments.map(app=>
+                                                            <>
+                                                        <Modal style={{'width':'500px'}}
+                                                            onClose={() => setOpenUser(false)}
+                                                            onOpen={() => setOpenUser(true)}
+                                                            trigger={<Button> {app.date} </Button>}
+                                                        >
+                                                            <Modal.Header> 
+                                                            {app.type}                      
+                                                            </Modal.Header>
+
+                                                            <Modal.Content >
+                                                            {app.Description}<br/>
+                                                            {app.time}
+                                                            </Modal.Content>
+
+                                                            <Modal.Actions>
+                                                            </Modal.Actions>
+                                                        </Modal><br/></>):""
+                                                    }
+                                            </List.Item> 
+                                        </List.Item> 
+                                   
+                                </List.Item>
                         </List.Content>
-                        </List.Content>
-                         </List.Item>
-                    </List.Content>
-                   
-                </List> 
+                   </List> 
         })}
 
      <CreateUserForm 
-                     handleSubmit={handleSubmit}
-                     handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+     />
+     <CreateAppointmentForm 
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+        users={users}
      />
 
      </fragment>

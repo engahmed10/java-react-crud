@@ -1,11 +1,12 @@
 import React from 'react'
 import { Button, Checkbox, Form } from "semantic-ui-react";
 
-export const CreateAppointment = () => {
+export const CreateAppointment = ({users}) => {
    
    
     return(
             <>
+           
             <Form>
                 <Form.Field>
                 <label>Description</label>
@@ -16,7 +17,12 @@ export const CreateAppointment = () => {
                 <input placeholder='date' />
                 </Form.Field>
                 <Form.Field>
-                 Add user 
+                 Choose user 
+                <select id="users">
+               {users.map(user=> <option value="">{user.fullname }</option>)}
+                   
+                  
+                </select>
                 </Form.Field>
                 <Button type='submit'>Submit</Button>
             </Form>
