@@ -8,6 +8,7 @@ const Users=({props})=>{
 const [users, setUsers] = useState([]);
 const [openuser, setOpenUser] = useState([]);
 const [form, setForm] = useState("");
+const [appForm,setAppForm]=useState("");
 
    useEffect(()=> {
        fetch("http://localhost:8080/users")
@@ -25,7 +26,6 @@ const [form, setForm] = useState("");
 
     function handleSubmit(e){
      e.preventDefault();
-        
           const fetchUrl = 'http://localhost:8080/users';
           fetch(fetchUrl, {
               method: 'POST',
@@ -53,24 +53,46 @@ const [form, setForm] = useState("");
        setUsers(users.filter((e)=>e.userid != id ))
         //e.target.parentNode.remove();          
    }
+
+   function handleAppChange(e,user_id){
+                
+
+       const{name,value}=e.target
+      setAppForm(prevState=>({appointment:{...prevState.appointment,[name]:value}}))
+      console.log(`log`,appForm.appointment)
+   }
+
+   function handleAppSubmit(e){
+
+     e.preventDefault();        
+     const fetchUrl = `http://localhost:8080/${appForm.appointment.user_id}/appointments`;
+     fetch(fetchUrl, {
+        method: 'POST',
+        body: JSON.stringify(appForm.appointment),
+        headers: {
+        'Content-Type': 'application/json'
+        }
+     })
+     .then((response) => response.json())
+    // .then((data) => setAppointment(apointments.concat(data)))
+    // .catch((error) => console.log(`erroorrrr`,error))
+
+    }
  
    
    return<fragment>
+       
          {users.map((user)=>{
              return <List selection verticalAlign='middle'>
 
                        <List.Content>
-
-                               
                                 <List.Item>
-
                                     <List.Content>
                                      <Image style={{'margin':'20px 20px'}} avatar src='https://react.semantic-ui.com/images/avatar/small/daniel.jpg' />
 
-                                     {user.fullname}<br/>
-
+                                            {user.fullname}<br/>
                                             {user.email}         
-                                           &nbsp; &nbsp; &nbsp; <button  onClick={e=>handleDelete(e,user.userid)} >delete</button>
+                                            &nbsp; &nbsp; &nbsp; <button  onClick={e=>handleDelete(e,user.userid)} >delete</button>
                                     </List.Content>
                                         
                                        <List.Item as='ul'>    
@@ -110,8 +132,8 @@ const [form, setForm] = useState("");
         handleChange={handleChange}
      />
      <CreateAppointmentForm 
-        handleSubmit={handleSubmit}
-        handleChange={handleChange}
+        handleAppSubmit={handleAppSubmit}
+        handleAppChange={handleAppChange }
         users={users}
      />
 
